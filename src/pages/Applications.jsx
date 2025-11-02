@@ -6,8 +6,15 @@ import { AppContext } from "../context/AppContext";
 
 const Applications = () => {
   const navigate = useNavigate();
-  const { jobsApplied, fetchAppliedJobs } = useContext(AppContext);
+  const { jobsApplied, fetchAppliedJobs, backendUrl, userData } = useContext(AppContext);
   const [filter, setFilter] = useState("All");
+
+  // Refetch applications when user changes
+  useEffect(() => {
+    if (userData && userData.role === "User") {
+      fetchAppliedJobs();
+    }
+  }, [userData, fetchAppliedJobs]);
 
   // Poll for score updates every 5 seconds for pending scores
   useEffect(() => {
@@ -22,7 +29,7 @@ const Applications = () => {
 
       return () => clearInterval(interval);
     }
-  }, [jobsApplied, fetchAppliedJobs]);
+  }, [jobsApplied, fetchAppliedJobs , backendUrl]);
 
   // Filter and sort jobs
   const filteredJobs = useMemo(() => {

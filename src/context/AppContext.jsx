@@ -113,6 +113,16 @@ export const AppContextProvider = (props) => {
     );
   };
 
+  // Logout function to clear all user data
+  const logout = () => {
+    localStorage.removeItem("token");
+    setUserData(null);
+    setCompanyData(null);
+    setJobsApplied([]);
+    setUserApplications([]);
+    console.log("User logged out, data cleared");
+  };
+
   // Fetch recruiter applications
   const fetchRecruiterApplications = async () => {
     try {
@@ -186,6 +196,7 @@ export const AppContextProvider = (props) => {
     fetchRecruiterApplications,
     updateApplicationScore,
     getAuthHeaders,
+    logout,
   };
 
   return (

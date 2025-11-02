@@ -15,7 +15,7 @@ import Navbar from "../components/Navbar";
 import { AppContext } from "../context/AppContext";
 
 const UserDashboard = () => {
-  const { userData, setUserData, backendUrl, fetchUserData } =
+  const { userData, setUserData, backendUrl, fetchUserData, getAuthHeaders, logout: contextLogout } =
     useContext(AppContext);
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -25,16 +25,17 @@ const UserDashboard = () => {
   const logout = async () => {
     try {
       const { data } = await axios.get(`${backendUrl}/api/users/logout`, {
-        withCredentials: true,
+        headers: getAuthHeaders(),
       });
       if (!data.success) return toast.error(data.message);
 
       toast.success("Logged out successfully");
-      setUserData(null);
-      setCompanyData(null);
+      contextLogout(); // Use context logout function
       navigate("/");
     } catch (error) {
       toast.error(error.message);
+      contextLogout(); // Clear data even if API call fails
+      navigate("/");
     }
   };
 

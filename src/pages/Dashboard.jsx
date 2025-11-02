@@ -17,7 +17,7 @@ import Navbar from "../components/Navbar";
 import { AppContext } from "../context/AppContext";
 
 const Dashboard = () => {
-  const { setCompanyData, setUserData, backendUrl, fetchUserData, getAuthHeaders } =
+  const { setCompanyData, setUserData, backendUrl, fetchUserData, getAuthHeaders, logout: contextLogout } =
     useContext(AppContext);
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -32,12 +32,12 @@ const Dashboard = () => {
       if (!data.success) return toast.error(data.message);
 
       toast.success("Logged out successfully");
-      setUserData(null);
-      setCompanyData(null);
-      await fetchUserData();
+      contextLogout(); // Use context logout function
       navigate("/");
     } catch (error) {
       toast.error(error.message);
+      contextLogout(); // Clear data even if API call fails
+      navigate("/");
     }
   };
 

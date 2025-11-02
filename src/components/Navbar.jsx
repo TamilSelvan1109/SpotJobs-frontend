@@ -17,6 +17,7 @@ const Navbar = () => {
     fetchUserData,
     setCompanyData,
     getAuthHeaders,
+    logout,
   } = useContext(AppContext);
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -31,13 +32,14 @@ const Navbar = () => {
       });
       if (!data.success) return toast.error(data.message);
       toast.success("Logged out successfully");
-      setUserData(null);
-      setCompanyData(null);
+      logout(); // Use context logout function
       setDropdownOpen(false);
-      localStorage.removeItem("token");
       navigate("/");
     } catch (err) {
       toast.error(err.message);
+      logout(); // Clear data even if API call fails
+      setDropdownOpen(false);
+      navigate("/");
     }
   };
 
