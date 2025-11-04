@@ -10,14 +10,14 @@ const Applications = () => {
     useContext(AppContext);
   const [filter, setFilter] = useState("All");
 
-  // Clear and refetch applications when user changes
+  // Fetch applications on component mount
   useEffect(() => {
     if (userData && userData.role === "User") {
       fetchAppliedJobs();
     } else {
       setJobsApplied([]);
     }
-  }, [userData, fetchAppliedJobs]);
+  }, []);
 
 
 

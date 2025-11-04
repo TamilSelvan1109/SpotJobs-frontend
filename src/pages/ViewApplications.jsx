@@ -43,7 +43,7 @@ const ViewApplications = () => {
 
   useEffect(() => {
     fetchApplications();
-  }, [backendUrl]);
+  }, []);
 
 
 
