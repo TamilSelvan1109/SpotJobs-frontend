@@ -6,14 +6,16 @@ import { AppContext } from "../context/AppContext";
 
 const Applications = () => {
   const navigate = useNavigate();
-  const { jobsApplied, fetchAppliedJobs, backendUrl, userData } =
+  const { jobsApplied, setJobsApplied, fetchAppliedJobs, backendUrl, userData } =
     useContext(AppContext);
   const [filter, setFilter] = useState("All");
 
-  // Refetch applications when user changes
+  // Clear and refetch applications when user changes
   useEffect(() => {
     if (userData && userData.role === "User") {
       fetchAppliedJobs();
+    } else {
+      setJobsApplied([]);
     }
   }, [userData, fetchAppliedJobs]);
 
