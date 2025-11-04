@@ -45,19 +45,7 @@ const ViewApplications = () => {
     fetchApplications();
   }, [backendUrl]);
 
-  // Poll for score updates every 10 seconds
-  useEffect(() => {
-    if (applications.length === 0) return;
 
-    const interval = setInterval(async () => {
-      const updatedApps = await fetchRecruiterApplications();
-      if (updatedApps.length > 0) {
-        setApplications(updatedApps);
-      }
-    }, 10000);
-
-    return () => clearInterval(interval);
-  }, [applications, fetchRecruiterApplications]);
 
   // Apply filters
   useEffect(() => {
@@ -265,21 +253,25 @@ const ViewApplications = () => {
                       {app.score !== null && app.score !== undefined ? (
                         <div className="flex items-center justify-center">
                           <div
-                            className={`w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold ${
+                            className={`w-10 h-10 rounded-lg flex items-center justify-center text-xs font-semibold border ${
                               app.score >= 80
-                                ? "bg-green-100 text-green-800"
+                                ? "bg-green-50 text-green-800 border-green-200"
                                 : app.score >= 60
-                                ? "bg-yellow-100 text-yellow-800"
+                                ? "bg-blue-50 text-blue-800 border-blue-200"
                                 : app.score >= 40
-                                ? "bg-orange-100 text-orange-800"
-                                : "bg-red-100 text-red-800"
+                                ? "bg-orange-50 text-orange-800 border-orange-200"
+                                : "bg-red-50 text-red-800 border-red-200"
                             }`}
                           >
                             {app.score}%
                           </div>
                         </div>
                       ) : (
-                        <span className="text-gray-400 text-xs">Pending</span>
+                        <div className="flex items-center justify-center">
+                          <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-gray-50 border border-gray-200">
+                            <span className="text-xs font-medium text-gray-500">--</span>
+                          </div>
+                        </div>
                       )}
                     </td>
 

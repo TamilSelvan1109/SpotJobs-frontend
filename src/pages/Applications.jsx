@@ -19,22 +19,7 @@ const Applications = () => {
     }
   }, [userData, fetchAppliedJobs]);
 
-  // Poll for score updates every 5 seconds for pending scores
-  useEffect(() => {
-    if (!jobsApplied) return;
 
-    const hasPendingScores = jobsApplied.some(
-      (job) => job.score === null || job.score === undefined
-    );
-
-    if (hasPendingScores) {
-      const interval = setInterval(() => {
-        fetchAppliedJobs();
-      }, 3000); // Check every 3 seconds for pending scores
-
-      return () => clearInterval(interval);
-    }
-  }, [jobsApplied, fetchAppliedJobs, backendUrl]);
 
   // Filter and sort jobs
   const filteredJobs = useMemo(() => {
@@ -137,39 +122,39 @@ const Applications = () => {
                     {job.score !== null && job.score !== undefined ? (
                       <div className="flex flex-col items-center justify-center">
                         <div
-                          className={`w-14 h-14 rounded-full flex items-center justify-center text-sm font-bold border-2 ${
+                          className={`w-12 h-12 rounded-lg flex items-center justify-center text-sm font-semibold border ${
                             job.score >= 85
-                              ? "bg-green-50 text-green-700 border-green-200"
+                              ? "bg-green-50 text-green-800 border-green-200"
                               : job.score >= 70
-                              ? "bg-blue-50 text-blue-700 border-blue-200"
+                              ? "bg-blue-50 text-blue-800 border-blue-200"
                               : job.score >= 55
-                              ? "bg-yellow-50 text-yellow-700 border-yellow-200"
+                              ? "bg-yellow-50 text-yellow-800 border-yellow-200"
                               : job.score >= 40
-                              ? "bg-orange-50 text-orange-700 border-orange-200"
-                              : "bg-red-50 text-red-700 border-red-200"
+                              ? "bg-orange-50 text-orange-800 border-orange-200"
+                              : "bg-red-50 text-red-800 border-red-200"
                           }`}
                         >
                           {job.score}%
                         </div>
                         <span
-                          className={`text-xs mt-1 font-medium ${
+                          className={`text-xs font-medium mt-1 ${
                             job.score >= 85
-                              ? "text-green-600"
+                              ? "text-green-700"
                               : job.score >= 70
-                              ? "text-blue-600"
+                              ? "text-blue-700"
                               : job.score >= 55
-                              ? "text-yellow-600"
+                              ? "text-yellow-700"
                               : job.score >= 40
-                              ? "text-orange-600"
-                              : "text-red-600"
+                              ? "text-orange-700"
+                              : "text-red-700"
                           }`}
                         >
                           {job.score >= 85
-                            ? "Excellent"
+                            ? "Excellent Match"
                             : job.score >= 70
-                            ? "Good Match"
+                            ? "Strong Match"
                             : job.score >= 55
-                            ? "Fair Match"
+                            ? "Moderate Match"
                             : job.score >= 40
                             ? "Weak Match"
                             : "Poor Match"}
@@ -177,11 +162,11 @@ const Applications = () => {
                       </div>
                     ) : (
                       <div className="flex flex-col items-center">
-                        <div className="w-14 h-14 rounded-full flex items-center justify-center bg-gray-100 border-2 border-gray-200">
-                          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
+                        <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-gray-50 border border-gray-200">
+                          <span className="text-xs font-medium text-gray-500">--</span>
                         </div>
-                        <span className="text-gray-500 text-xs mt-1">
-                          Analyzing...
+                        <span className="text-gray-500 text-xs mt-1 font-medium">
+                          Pending
                         </span>
                       </div>
                     )}
