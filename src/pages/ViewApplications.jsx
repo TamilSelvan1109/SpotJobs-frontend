@@ -7,7 +7,8 @@ import Loading from "../components/Loading";
 import { AppContext } from "../context/AppContext";
 
 const ViewApplications = () => {
-  const { backendUrl, getAuthHeaders, fetchRecruiterApplications } = useContext(AppContext);
+  const { backendUrl, getAuthHeaders, fetchRecruiterApplications } =
+    useContext(AppContext);
   const [applications, setApplications] = useState([]);
   const [filteredApps, setFilteredApps] = useState([]);
   const [jobFilter, setJobFilter] = useState("");
@@ -15,17 +16,14 @@ const ViewApplications = () => {
   const [statusFilter, setStatusFilter] = useState("");
   const [scoreFilter, setScoreFilter] = useState("");
   const [loading, setLoading] = useState(false);
-  
+
   // Fetch applications
   const fetchApplications = async () => {
     setLoading(true);
     try {
-      const { data } = await axios.get(
-        `${backendUrl}/api/company/applicants`,
-        {
-          headers: getAuthHeaders(),
-        }
-      );
+      const { data } = await axios.get(`${backendUrl}/api/company/applicants`, {
+        headers: getAuthHeaders(),
+      });
       if (data.success) {
         setApplications(data.applications);
         setFilteredApps(data.applications);
@@ -50,7 +48,7 @@ const ViewApplications = () => {
   // Poll for score updates every 10 seconds
   useEffect(() => {
     if (applications.length === 0) return;
-    
+
     const interval = setInterval(async () => {
       const updatedApps = await fetchRecruiterApplications();
       if (updatedApps.length > 0) {
@@ -85,11 +83,16 @@ const ViewApplications = () => {
         if (app.score === null || app.score === undefined) return false;
         const score = app.score;
         switch (scoreFilter) {
-          case "80+": return score >= 80;
-          case "60-79": return score >= 60 && score < 80;
-          case "40-59": return score >= 40 && score < 60;
-          case "<40": return score < 40;
-          default: return true;
+          case "80+":
+            return score >= 80;
+          case "60-79":
+            return score >= 60 && score < 80;
+          case "40-59":
+            return score >= 40 && score < 60;
+          case "<40":
+            return score < 40;
+          default:
+            return true;
         }
       });
     }
@@ -204,7 +207,7 @@ const ViewApplications = () => {
                 <th className="px-6 py-3 text-left w-[16%]">Job Title</th>
                 <th className="px-6 py-3 text-left w-[12%]">Location</th>
                 <th className="px-6 py-3 text-left w-[12%]">Applied On</th>
-                <th className="px-6 py-3 text-center w-[8%]">Score</th>
+                <th className="px-6 py-3 text-center w-[8%]">Skill Match</th>
                 <th className="px-6 py-3 text-left w-[10%]">Resume</th>
                 <th className="px-6 py-3 text-left w-[10%]">Status</th>
               </tr>
@@ -261,12 +264,17 @@ const ViewApplications = () => {
                     <td className="px-6 py-4 text-center">
                       {app.score !== null && app.score !== undefined ? (
                         <div className="flex items-center justify-center">
-                          <div className={`w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold ${
-                            app.score >= 80 ? 'bg-green-100 text-green-800' :
-                            app.score >= 60 ? 'bg-yellow-100 text-yellow-800' :
-                            app.score >= 40 ? 'bg-orange-100 text-orange-800' :
-                            'bg-red-100 text-red-800'
-                          }`}>
+                          <div
+                            className={`w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold ${
+                              app.score >= 80
+                                ? "bg-green-100 text-green-800"
+                                : app.score >= 60
+                                ? "bg-yellow-100 text-yellow-800"
+                                : app.score >= 40
+                                ? "bg-orange-100 text-orange-800"
+                                : "bg-red-100 text-red-800"
+                            }`}
+                          >
                             {app.score}%
                           </div>
                         </div>
